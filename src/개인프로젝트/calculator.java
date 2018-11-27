@@ -94,3 +94,5 @@ public class calculator extends JFrame{
 		new calculator();
 	}
 }
+
+
