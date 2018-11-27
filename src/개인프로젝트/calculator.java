@@ -35,7 +35,6 @@ public class calculator extends JFrame{
 				for(int i=0;i<year.length();i++){
 					char c = year.charAt(i);
 					if(c<48 || c> 57){//숫자가 아닌 경우
-						result = "문자가 포함됨";
 						break;
 					}
 				}
