@@ -8,6 +8,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 //[출처] [JAVA] Calendar (캘린더) 클래스 (추가: 날짜 계산 및 관련 함수, 날짜포맷;SimpleDateFormat)|작성자 자바킹
+
 public class calculator extends JFrame{
 	JLabel jl1 = new JLabel("연도");
 	JTextField tf1 = new JTextField(4);
@@ -16,26 +17,26 @@ public class calculator extends JFrame{
 	JLabel jl3 = new JLabel("일");
 	JTextField tf3 = new JTextField(2);
 	JButton btn = new JButton("계산");
-	JLabel jl4 = new JLabel("D-");
 	JTextField tf4 = new JTextField(2);
-	JLabel jl5 = new JLabel("D+");
+	JLabel jl5 = new JLabel("요일");
 	JTextField tf5 = new JTextField(2);
 	calculator(){
 		setTitle("Date Calculator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Container cp = getContentPane();
-		cp.setLayout(null);
-		jl1.setLocation(320, 50);
-		tf1.setLocation(370, 50);
-		jl2.setLocation(320, 100);
-		tf2.setLocation(370, 100);
-		jl3.setLocation(320, 150);
-		tf3.setLocation(370, 150);
-		btn.setLocation(350, 200);
-		jl4.setLocation(350,250);
-		tf4.setLocation(370,250);
-		jl5.setLocation(350,300);
-		tf5.setLocation(370,300);
+		setLayout(null);
+		//
+		setContentPane(new JLabel(new ImageIcon("Main1.jpg")));
+		//컴퓨터프로그래밍 8강 발표
+		jl1.setLocation(420,150);
+		tf1.setLocation(470,150);
+		jl2.setLocation(420,200);
+		tf2.setLocation(470,200);
+		jl3.setLocation(420,250);
+		tf3.setLocation(470,250);
+		btn.setLocation(450,300);
+		tf4.setLocation(470,350);
+		jl5.setLocation(430,400);
+		tf5.setLocation(470,400);
 		jl1.setSize(30,30);
 		tf1.setSize(80,30);
 		jl2.setSize(30,30);
@@ -43,30 +44,44 @@ public class calculator extends JFrame{
 		jl3.setSize(30,30);
 		tf3.setSize(80,30);
 		btn.setSize(60,30);
-		jl4.setSize(30,30);
 		tf4.setSize(60,30);
 		jl5.setSize(30,30);
 		tf5.setSize(60,30);
-		cp.add(jl1);
-		cp.add(tf1);
-		cp.add(jl2);
-		cp.add(tf2);
-		cp.add(jl3);
-		cp.add(tf3);
-		cp.add(btn);
-		cp.add(jl4);
-		cp.add(tf4);
-		cp.add(jl5);
-		cp.add(tf5);
+		add(jl1);
+		add(tf1);
+		add(jl2);
+		add(tf2);
+		add(jl3);
+		add(tf3);
+		add(btn);
+		add(tf4);
+		add(jl5);
+		add(tf5);
 		btn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int mesa = 0;
 				String year = tf1.getText();
 				String month = tf2.getText();
 				String date = tf3.getText();
-				int b = Integer.parseInt(year);
-				int c = Integer.parseInt(month);
-				int d = Integer.parseInt(date);
+				int b,c,d;
+				try {
+				b = Integer.parseInt(year);
+				} catch(NumberFormatException nfe) {
+					b=0;
+					JOptionPane.showMessageDialog(null, "다시 입력해주세요", "Message", JOptionPane.ERROR_MESSAGE);
+				} 
+				try {
+					c = Integer.parseInt(month);
+					} catch(NumberFormatException nfe) {
+						c=0;
+						JOptionPane.showMessageDialog(null, "다시 입력해주세요", "Message", JOptionPane.ERROR_MESSAGE);
+					} 
+				try {
+					d = Integer.parseInt(date);
+				} catch(NumberFormatException nfe) {
+						d=0;
+						JOptionPane.showMessageDialog(null, "다시 입력해주세요", "Message", JOptionPane.ERROR_MESSAGE);
+				} 
 				switch(c) {
 				case 1:case 3:case 5:case 7:case 8:case 10:case 12:
 					if(b == 0|c<1 || c>12 | d<1 | d>31 & mesa ==0){
@@ -89,33 +104,31 @@ public class calculator extends JFrame{
 					int kg = calculate(b,c,d);
 					String kfc = Integer.toString(kg);
 					if(kg>=0)
-					tf4.setText(kfc);
-					else
-						tf5.setText(kfc);
+					tf4.setText("D-" + kfc);
+					else {
+						kg = -kg;
+						tf5.setText("D+" + Integer.toString(kg));
+					}
 				}
 			}
 		});
-		setSize(800,600);
+		setSize(1000,563);
 		setVisible(true);
 	}
 
 	int calculate (int a, int b, int c){
+		//
 		Calendar cal = Calendar.getInstance();
-		//[출처] [JAVA] Calendar (캘린더) 클래스 (추가: 날짜 계산 및 관련 함수, 날짜포맷;SimpleDateFormat)|작성자 자바킹
 		int yr = cal.get(Calendar.YEAR);
 		int mn = cal.get(Calendar.MONTH)+1;
 		int dt = cal.get(Calendar.DATE);
-		System.out.println(yr);
-		System.out.println(mn);
-		System.out.println(dt);
+		//[출처] [JAVA] Calendar (캘린더) 클래스 (추가: 날짜 계산 및 관련 함수, 날짜포맷;SimpleDateFormat)|작성자 자바킹
+		int y1 = yr;
+		int m1 = mn;
+		int d1 = dt;
 		int md = 0;
 		int d[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-		if(year(a)){ 
-			d[1] = 29;
-		}
-		else{
-			d[1] = 28;
-		}
+		
 		return md;
 	}
 	boolean year(int x){
