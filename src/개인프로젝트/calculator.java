@@ -104,9 +104,13 @@ public class calculator extends JFrame{
 				if(mesa == 0) {
 					int kg = calculate(b,c,d);
 					String kfc = Integer.toString(kg);
-					if(kg>=0) {
+					if(kg>0) {
 					tf4.setText("D-" + kfc);
 					tf5.setText(day(kg));
+					}
+					else if(kg==0) {
+						tf4.setText("D-Day!");
+						tf5.setText(day(kg));
 					}
 					else {
 						int kj = -kg;
@@ -127,7 +131,7 @@ public class calculator extends JFrame{
     	//[출처] [JAVA] Calendar (캘린더) 클래스 (추가: 날짜 계산 및 관련 함수, 날짜포맷;SimpleDateFormat)|작성자 자바킹
     	int cv = a % 7;
     	String m_week = null;
-    	if(a>0) {
+    	if(a>=0) {
     	   cv += day_of_week;
     	   if(cv>7) cv = cv % 7;
     	   switch(cv) {
@@ -139,6 +143,19 @@ public class calculator extends JFrame{
     	   case 6: m_week = "금"; break;
     	   case 7: m_week = "토"; break;
     	   }
+    	}
+    	else {
+    	   cv += day_of_week;
+     	   if(cv<-7) cv = cv % 7;
+     	   switch(cv) {
+     	   case -6:case 1: m_week = "일"; break;
+     	   case -5:case 2: m_week = "월"; break;
+     	   case -4:case 3: m_week = "화"; break;
+     	   case -3:case 4: m_week = "수"; break;
+     	   case -2:case 5: m_week = "목"; break;
+     	   case -1:case 6: m_week = "금"; break;
+     	   case 0:case 7: m_week = "토"; break;
+     	   }
     	}
         return m_week;
     }
@@ -161,7 +178,7 @@ public class calculator extends JFrame{
 				else d[1] = 28;
 				if(y1==yr) {
 					for(int i = mn-1; i<12; i++) {
-						if(i==mn-1) md = d[i] - dt;
+						if(i==mn-1) md = md + (d[i] - dt);
 						else md+=d[i];
 					}
 				}
@@ -177,6 +194,24 @@ public class calculator extends JFrame{
 							md += d[i];
 						}
 					}
+				}
+			}
+		}
+		else if (a == yr) {
+			if(b>mn) {
+				for(int i=mn-1;i<b;i++) {
+					if(i==b-1) md += c;
+					else md += d[i];
+				}
+			}
+			else if(b==mn) {
+				 md = md + (c - dt);
+			}
+			else {
+				for(int i=mn-1;i>=b-1;i--) {
+					if(i==mn-1) md -= dt;
+					else if(i==b-1) md = md - (d[i]-c);
+					else md -= d[i];
 				}
 			}
 		}
