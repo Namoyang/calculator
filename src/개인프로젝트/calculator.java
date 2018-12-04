@@ -1,3 +1,4 @@
+//
 package 개인프로젝트;
 
 import java.util.Scanner;
@@ -17,9 +18,10 @@ public class calculator extends JFrame{
 	JLabel jl3 = new JLabel("일");
 	JTextField tf3 = new JTextField(2);
 	JButton btn = new JButton("계산");
-	JTextField tf4 = new JTextField(2);
+	JTextField tf4 = new JTextField();
 	JTextField tf5 = new JTextField(2);
 	JLabel jl4 = new JLabel("요일");
+	JTextField tf6 = new JTextField("+는 기원후, -는 기원전, 0년은 없습니다.");
 	calculator(){
 		setTitle("Date Calculator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,28 +29,40 @@ public class calculator extends JFrame{
 		//
 		setContentPane(new JLabel(new ImageIcon("Main1.jpg")));
 		//컴퓨터프로그래밍 8강 발표
+		//
+		tf4.setEditable(false);
+		tf5.setEditable(false);
+		tf6.setEditable(false);
+		//출처 : http://dreamzelkova.tistory.com/entry/Java-26LabelTextField-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8
+		//
+		tf4.setHorizontalAlignment(JTextField.CENTER);
+		tf5.setHorizontalAlignment(JTextField.CENTER);
+		//출처 : https://m.blog.naver.com/PostView.nhn?blogId=idwook80&logNo=150030820034&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F
 		jl1.setLocation(420,150);
+		tf6.setLocation(560,150);
 		tf1.setLocation(470,150);
 		jl2.setLocation(420,200);
 		tf2.setLocation(470,200);
 		jl3.setLocation(420,250);
 		tf3.setLocation(470,250);
 		btn.setLocation(450,300);
-		tf4.setLocation(470,350);
-		tf5.setLocation(470,400);
-		jl4.setLocation(505,400);
+		tf4.setLocation(440,350);
+		tf5.setLocation(460,400);
+		jl4.setLocation(495,400);
 		jl1.setSize(30,30);
 		tf1.setSize(80,30);
+		tf6.setSize(205,30);
 		jl2.setSize(30,30);
 		tf2.setSize(80,30);
 		jl3.setSize(30,30);
 		tf3.setSize(80,30);
 		btn.setSize(60,30);
-		tf4.setSize(60,30);
+		tf4.setSize(100,30);
 		tf5.setSize(30,30);
 		jl4.setSize(30,30);
 		add(jl1);
 		add(tf1);
+		add(tf6);
 		add(jl2);
 		add(tf2);
 		add(jl3);
@@ -63,6 +77,8 @@ public class calculator extends JFrame{
 				String year = tf1.getText();
 				String month = tf2.getText();
 				String date = tf3.getText();
+				tf4.setText("");
+				tf5.setText("");
 				int b,c,d;
 				try {
 				b = Integer.parseInt(year);
@@ -79,6 +95,7 @@ public class calculator extends JFrame{
 				} catch(NumberFormatException nfe) {
 						d=0;
 				} 
+				if(b>0 & b<=1000000) {
 				switch(c) {
 				case 1:case 3:case 5:case 7:case 8:case 10:case 12:
 					if(b == 0|c<1 | c>12 | d<1 | d>31 & mesa ==0){
@@ -100,6 +117,35 @@ public class calculator extends JFrame{
 				default:JOptionPane.showMessageDialog(null, "다시 입력해주세요", "Message", JOptionPane.ERROR_MESSAGE);
 					    mesa++; 
 					    break;
+				}
+				}
+				else if(b<0 & b>=-1000001) {
+					switch(c) {
+					case 1:case 3:case 5:case 7:case 8:case 10:case 12:
+						if(b == 0|c<1 | c>12 | d<1 | d>31 & mesa ==0){
+							JOptionPane.showMessageDialog(null, "다시 입력해주세요", "Message", JOptionPane.ERROR_MESSAGE);
+							mesa++; 
+						}break;
+					case 2:	if(b == 0|c<1 | c>12 | d<1 | d>28 & mesa ==0 & !bcyear(b)){
+						JOptionPane.showMessageDialog(null, "다시 입력해주세요", "Message", JOptionPane.ERROR_MESSAGE);
+						mesa++; 
+					}
+					else if(b == 0|c<1 | c>12 | d<1 | d>29 & mesa ==0 & bcyear(b)) {
+						JOptionPane.showMessageDialog(null, "다시 입력해주세요", "Message", JOptionPane.ERROR_MESSAGE);
+						mesa++;
+					}break;
+					case 4:case 6:case 9:case 11:if(b == 0|c<1 | c>12 | d<1 | d>30 & mesa ==0){
+						JOptionPane.showMessageDialog(null, "다시 입력해주세요", "Message", JOptionPane.ERROR_MESSAGE);
+						mesa++; 
+					}break;
+					default:JOptionPane.showMessageDialog(null, "다시 입력해주세요", "Message", JOptionPane.ERROR_MESSAGE);
+						    mesa++; 
+						    break;
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "연도는 0년을 제외한 -1000001년(기원전 1000001년)부터 1000000년 사이까지만 입력해주세요", "Message", JOptionPane.ERROR_MESSAGE);
+				    mesa++; 
 				}
 				if(mesa == 0) {
 					int kg = calculate(b,c,d);
@@ -198,6 +244,8 @@ public class calculator extends JFrame{
 			}
 		}
 		else if (a == yr) {
+			if(year(a)) d[1] = 29;
+			else d[1] = 28;
 			if(b>mn) {
 				for(int i=mn-1;i<b;i++) {
 					if(i==b-1) md += c;
@@ -215,7 +263,7 @@ public class calculator extends JFrame{
 				}
 			}
 		}
-		return md;
+		 return md;
 	}
 	boolean year(int x){
 		if(x%4 == 0){
@@ -229,9 +277,21 @@ public class calculator extends JFrame{
 		}
 		else return false;
 	}
+	boolean bcyear(int x){
+		if(x%4 == -1){
+			if(x%100 == -1){
+				if(x%400 == -1){
+					return true;
+				}
+				else return false;
+			}
+			else return true;
+		}
+		else return false;
+	}
 	public static void main(String[] args){
 		new calculator();
 	}
 }
-
+//자바 에센셜 코드 응용해서 만듦
 
