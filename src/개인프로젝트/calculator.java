@@ -1,16 +1,17 @@
 //
 package 개인프로젝트;
 
-import java.util.Scanner;
 //
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 //[출처] [JAVA] Calendar (캘린더) 클래스 (추가: 날짜 계산 및 관련 함수, 날짜포맷;SimpleDateFormat)|작성자 자바킹
 
 public class calculator extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JLabel jl1 = new JLabel("연도");
 	JTextField tf1 = new JTextField(4);
 	JLabel jl2 = new JLabel("월");
@@ -22,6 +23,7 @@ public class calculator extends JFrame{
 	JTextField tf5 = new JTextField(2);
 	JLabel jl4 = new JLabel("요일");
 	JTextField tf6 = new JTextField("+는 기원후, -는 기원전, 0년은 없습니다.");
+	JTextField tf7 = new JTextField();
 	calculator(){
 		setTitle("Date Calculator");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,10 +35,12 @@ public class calculator extends JFrame{
 		tf4.setEditable(false);
 		tf5.setEditable(false);
 		tf6.setEditable(false);
+		tf7.setEditable(false);
 		//출처 : http://dreamzelkova.tistory.com/entry/Java-26LabelTextField-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8
 		//
 		tf4.setHorizontalAlignment(JTextField.CENTER);
 		tf5.setHorizontalAlignment(JTextField.CENTER);
+		tf7.setHorizontalAlignment(JTextField.CENTER);
 		//출처 : https://m.blog.naver.com/PostView.nhn?blogId=idwook80&logNo=150030820034&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F
 		jl1.setLocation(420,150);
 		tf6.setLocation(560,150);
@@ -49,6 +53,7 @@ public class calculator extends JFrame{
 		tf4.setLocation(440,350);
 		tf5.setLocation(460,400);
 		jl4.setLocation(495,400);
+		tf7.setLocation(445,450);
 		jl1.setSize(30,30);
 		tf1.setSize(80,30);
 		tf6.setSize(205,30);
@@ -60,6 +65,7 @@ public class calculator extends JFrame{
 		tf4.setSize(100,30);
 		tf5.setSize(30,30);
 		jl4.setSize(30,30);
+		tf7.setSize(90,30);
 		add(jl1);
 		add(tf1);
 		add(tf6);
@@ -71,6 +77,7 @@ public class calculator extends JFrame{
 		add(tf4);
 		add(tf5);
 		add(jl4);
+		add(tf7);
 		btn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				int mesa = 0;
@@ -157,6 +164,9 @@ public class calculator extends JFrame{
 					else if(kg==0) {
 						tf4.setText("D-Day!");
 						tf5.setText(day(kg));
+						if(c==12 & d==5) {
+							tf7.setText("생일 축하합니다!");
+						}
 					}
 					else {
 						int kj = -kg;
@@ -214,8 +224,6 @@ public class calculator extends JFrame{
 		int dt = cal.get(Calendar.DATE);
 		//[출처] [JAVA] Calendar (캘린더) 클래스 (추가: 날짜 계산 및 관련 함수, 날짜포맷;SimpleDateFormat)|작성자 자바킹
 		int y1 = yr;
-		int m1 = mn;
-		int d1 = dt;
 		int md = 0;
 		int d[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 		if(a > yr) {
@@ -263,6 +271,38 @@ public class calculator extends JFrame{
 				}
 			}
 		}
+		else {
+			for(y1=yr;y1>=a;) {
+				if(y1>0) {
+				if(year(y1)) d[1] = 29;
+				else d[1] = 28;
+				}
+				else if(y1<0) {
+					if(bcyear(y1)) d[1] = 29;
+					else d[0] = 28;
+				}
+				if(y1==yr) {
+					for(int i=mn-1;i>=0;i--) {
+						if(i==mn-1) md = md - dt;
+						else md -= d[i];
+					}
+				}
+				else if(y1==a) {
+					for(int i=11;i>=b-1;i--) {
+						if(i==b-1) md = md - (d[i] - c);
+						else md -= d[i];
+					}
+				}
+				else {
+					for(int i=11;i>=0;i--) {
+						md -= d[i];
+					}
+				}
+				if(y1==1) y1 = -1;
+				else y1--;
+			}
+		}
+		
 		 return md;
 	}
 	boolean year(int x){
